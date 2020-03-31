@@ -1,0 +1,307 @@
+<%- include('includes/header.ejs') %>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+</head>
+
+<body>
+
+  <div class="jumbotron shadow bg-primary text-light text-center text-md-left">
+    <div class="container">
+      <h1 class="display-4">Indoors</h1>
+      <p><% messages.forEach(message => { %>
+        <span class="d-block"><%= message %></span>
+      <% }) %></p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="d-flex p-3 justify-content-between align-items-center">
+      <a href="/?date=<%= prevDate.toISOString().split('T')[0] %>">Previous</a>
+      <a href="/ %>">Today</a>
+      <a href="/?date=<%= nextDate.toISOString().split('T')[0] %>">Next</a>
+    </div>
+
+    <div class="border-bottom">
+      <div class="d-flex p-4" onclick="toggleDiv('chartTemperatureDiv')">
+        <div>
+          <img src="/img/icons8-temperature-50.png" alt="Temperature" style="width: 25px;" class="mr-4">
+        </div>
+        <div class="mr-auto">
+          <span class="font-weight-bold"><%= temperature.value %></span><small class="text-muted ml-1">°C</small>
+        </div>
+        <div>
+          <span class="font-weight-bold <%= temperature.class %>"><%= temperature.text %></span>
+        </div>
+      </div>
+      <div id="chartTemperatureDiv" class="pb-2" style="display: none;">
+        <div>
+          <div id="chartTemperature"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="border-bottom">
+      <div class="d-flex p-4" onclick="toggleDiv('chartHumidityDiv')">
+        <div>
+          <img src="/img/icons8-humidity-50.png" alt="Humidity" style="width: 25px;" class="mr-4">
+        </div>
+        <div class="mr-auto">
+          <span class="font-weight-bold"><%= humidity.value %></span><small class="text-muted ml-1">%</small>
+        </div>
+        <div>
+          <span class="font-weight-bold <%= humidity.class %>"><%= humidity.text %></span>
+        </div>
+      </div>
+      <div class="pb-2" id="chartHumidityDiv" style="display: none;">
+        <div>
+          <div id="chartHumidity"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="border-bottom">
+      <div class="d-flex p-4" onclick="toggleDiv('chartpm10Div')">
+        <div>
+          <img src="/img/icons8-clouds-50.png" alt="10μm particles" style="width: 25px;" class="mr-4">
+        </div>
+        <div class="mr-auto">
+          <span class="font-weight-bold"><%= pm10.value %></span><small class="text-muted ml-1">µg/m³ (@ 10 μm)</small>
+        </div>
+        <div>
+          <span class="font-weight-bold <%= pm10.class %>"><%= pm10.text %></span>
+        </div>
+      </div>
+      <div class="pb-2" id="chartpm10Div" style="display: none;">
+        <div class="d-flex align-items-center justify-content-center">
+          <span class="text-success mr-3">0 - 20</span>
+          <span class="text-warning mr-3">20 - 50</span>
+          <span class="text-danger mr-3">> 50</span>
+          <!-- <span class="text-success mr-3">0 - 50</span>
+          <span class="text-warning mr-3">51 - 75</span>
+          <span class="text-danger mr-3">76 - 100</span>
+          <span class="text-danger mr-3">≥101</span> -->
+        </div>
+        <div>
+          <div id="chartpm10"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-bottom">
+      <div class="d-flex p-4" onclick="toggleDiv('chartpm2p5Div')">
+        <div>
+          <img src="/img/icons8-clouds-50.png" alt="2.5μm particles" style="width: 25px;" class="mr-4">
+        </div>
+        <div class="mr-auto">
+          <span class="font-weight-bold"><%= pm2p5.value %></span><small class="text-muted ml-1">µg/m³ (@ 2.5 μm)</small>
+        </div>
+        <div>
+          <span class="font-weight-bold <%= pm2p5.class %>"><%= pm2p5.text %></span>
+        </div>
+      </div>
+      <div class="pb-2" id="chartpm2p5Div" style="display: none;">
+        <div class="d-flex align-items-center justify-content-center">
+          <span class="text-success mr-3">0 - 10</span>
+          <span class="text-warning mr-3">10 - 25</span>
+          <span class="text-danger mr-3">>25</span>
+          <!-- <span class="text-success mr-3">0 - 35</span>
+          <span class="text-warning mr-3">36 - 53</span>
+          <span class="text-danger mr-3">54 - 70</span>
+          <span class="text-danger mr-3">≥71</span> -->
+        </div>
+        <div>
+          <div id="chartpm2p5"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="border-bottom">
+      <div class="d-flex p-4" onclick="toggleDiv('chartCO2Div')">
+        <div>
+          <img src="/img/icons8-co2-48.png" alt="2.5μm particles" style="width: 25px;" class="mr-4">
+        </div>
+        <div class="mr-auto">
+          <span class="font-weight-bold"><%= co2.value %></span><small class="text-muted ml-1">ppm</small>
+        </div>
+        <div>
+          <span class="font-weight-bold <%= co2.class %>"><%= co2.text %></span>
+        </div>
+      </div>
+      <div class="pb-2" id="chartCO2Div" style="display: none;">
+        <div class="d-flex align-items-center justify-content-center">
+          <span class="text-success mr-3">0 - 800</span>
+          <span class="text-warning mr-3">800 - 1,200</span>
+          <span class="text-danger mr-3">1,200 - 1,600</span>
+          <span class="text-danger mr-3">≥1,600</span>
+        </div>
+        <div>
+          <div id="chartCO2"></div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+<script type="text/javascript">
+
+function toggleDiv(divId) {
+  var x = document.getElementById(divId);
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+
+
+// const pm10PlotBands = [{
+//       from: 0,
+//       to: 50,
+//       color: '#28a74545',
+//   },{
+//       from: 50,
+//       to: 75,
+//       color: '#ffc10745',
+//   },{
+//       from: 75,
+//       to: 100,
+//       color: '#dc354545',
+//   },{
+//       from: 100,
+//       to: 500,
+//       color: '#dc354599',
+//   }];
+//   const pm2p5PlotBands = [{
+//       from: 0,
+//       to: 35,
+//       color: '#28a74545',
+//   },{
+//       from: 35,
+//       to: 53,
+//       color: '#ffc10745',
+//   },{
+//       from: 53,
+//       to: 70,
+//       color: '#dc354545',
+//   },{
+//       from: 70,
+//       to: 500,
+//       color: '#dc354599',
+//   }];
+const pm10PlotBands = [{
+      from: 0,
+      to: 20,
+      color: '#28a74545',
+  },{
+      from: 20,
+      to: 50,
+      color: '#ffc10745',
+  },{
+      from: 50,
+      to: 500,
+      color: '#dc354545',
+  }];
+  const pm2p5PlotBands = [{
+      from: 0,
+      to: 10,
+      color: '#28a74545',
+  },{
+      from: 10,
+      to: 25,
+      color: '#ffc10745',
+  },{
+      from: 25,
+      to: 500,
+      color: '#dc354545',
+  }];
+  const humidityPlotBands= [{
+      from: 30,
+      to: 55,
+      color: '#28a74545',
+  }];
+  const temperaturePlotBands= [{
+      from: 18,
+      to: 22,
+      color: '#28a74545',
+  }];
+  const co2PlotBands = [{
+      from: 0,
+      to: 800,
+      color: '#28a74545',
+  },{
+      from: 800,
+      to: 1200,
+      color: '#ffc10745',
+  },{
+      from: 1200,
+      to: 1600,
+      color: '#dc354545',
+  },{
+      from: 1600,
+      to: 5000,
+      color: '#dc354599',
+  }];
+
+  buildChart('chartTemperature', <%- JSON.stringify(temperature.data) %>, temperaturePlotBands);
+  buildChart('chartHumidity', <%- JSON.stringify(humidity.data) %>, humidityPlotBands);
+  buildChart('chartpm10', <%- JSON.stringify(pm10.data) %>, pm10PlotBands);
+  buildChart('chartpm2p5', <%- JSON.stringify(pm2p5.data) %>, pm2p5PlotBands);
+  buildChart('chartCO2', <%- JSON.stringify(co2.data) %>, co2PlotBands);
+
+function buildChart(name, data, plotBands = []) {
+  
+  Highcharts.chart(name, {
+
+    title: {
+        text: null
+    },
+    legend: {
+      enabled: false
+    },
+    chart: {
+      height: '100px'
+    },
+    yAxis: {
+        title: {
+            text: null
+        },
+        gridLineColor: 'transparent',
+        tickAmount: 6,
+        endOnTick: false,
+        startOnTick: false,
+        plotBands: plotBands
+    },
+
+    xAxis: {
+        visible: false,
+        type: 'datetime'
+    },
+
+    plotOptions: {
+        series: {
+            marker: {
+                enabled: false
+            },
+            color: '#343a40'
+        }
+    },
+
+    series: [{
+        name: name,
+        data: data
+    }],
+  });
+}
+
+
+
+
+</script>
+
+
+
+  <%- include('includes/footer.ejs') %>
