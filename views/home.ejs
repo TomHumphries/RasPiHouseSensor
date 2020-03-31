@@ -19,7 +19,19 @@
 
     <div class="d-flex p-3 justify-content-between align-items-center">
       <a href="/?date=<%= prevDate.toISOString().split('T')[0] %>">Previous</a>
-      <a href="/ %>">Today</a>
+      <!-- <a href="/ %>">Today</a> -->
+      <form action="/" method="GET">
+        <div class="input-group">
+          <select class="form-control" name="date">
+            <% dates.forEach(date => { %>
+              <option value="<%= date.toISOString() %>"><%= date.toISOString().split('T')[0] %></option>
+            <% }) %>
+          </select>
+          <div class="input-group-append">
+            <button class="btn btn-success" type="submit">Go</button>
+          </div>
+        </div>
+      </form>
       <a href="/?date=<%= nextDate.toISOString().split('T')[0] %>">Next</a>
     </div>
 

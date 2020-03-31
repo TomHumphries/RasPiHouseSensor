@@ -22,12 +22,21 @@ app.get('/', (req, res, next) => {
     }
     let dataSignals = [];
 
+    // create a year of dates
+    const today = new Date(new Date().setUTCHours(0, 0, 0, 0));
+    const dates = [];
+    for (let i = 0; i < 365; i++) {
+        dates.push(new Date(today));
+        today.setUTCDate(today.getUTCDate() - 1);
+    }
+
     const messages = [];
 
     const temperature = {};
     const temperatureCsv = loadCsvDate('temperature', date);
     temperature.data = csvToHighchartPoints(temperatureCsv);
-    temperature.value = temperature.data[temperature.data.length - 1][1];
+    temperature.value = '';
+    if (temperature.data[temperature.data.length - 1]) temperature.value = temperature.data[temperature.data.length - 1][1];
     addNullAtNextMidnightHighcharts(temperature.data, date);
 
     if (temperature.value < 15) {
@@ -35,7 +44,7 @@ app.get('/', (req, res, next) => {
         temperature.class = "text-danger"
         messages.push(`It's cold. `);
     } else if (temperature.value < 18) {
-        temperature.text = "Chilly",
+        temperature.text = "Chilly",value =
         temperature.class = "text-warning"
         messages.push(`It's a little cold. `);
     } else if (temperature.value > 22) {
@@ -55,7 +64,8 @@ app.get('/', (req, res, next) => {
     const humidity = {};
     const humidityCsv = loadCsvDate('humidity', date);
     humidity.data = csvToHighchartPoints(humidityCsv);
-    humidity.value = humidity.data[humidity.data.length - 1][1];
+    humidity.value = '';
+    if (humidity.data[humidity.data.length - 1]) humidity.value = humidity.data[humidity.data.length - 1][1];
     addNullAtNextMidnightHighcharts(humidity.data, date);
     
     if (humidity.value < 30) {
@@ -80,7 +90,8 @@ app.get('/', (req, res, next) => {
     const pm2p5 = {};
     const pm2p5Csv = loadCsvDate('pm2.5', date);
     pm2p5.data = csvToHighchartPoints(pm2p5Csv);
-    pm2p5.value = pm2p5.data[pm2p5.data.length - 1][1];
+    pm2p5.value = '';
+    if (pm2p5.data[pm2p5.data.length - 1]) pm2p5.value = pm2p5.data[pm2p5.data.length - 1][1];
     addNullAtNextMidnightHighcharts(pm2p5.data, date);
     
     // based on WHO guidelines
@@ -118,7 +129,8 @@ app.get('/', (req, res, next) => {
     const pm10 = {};
     const pm10Csv = loadCsvDate('pm10', date);
     pm10.data = csvToHighchartPoints(pm10Csv);
-    pm10.value = pm10.data[pm10.data.length - 1][1];
+    pm10.value = '';
+    if (pm10.data[pm10.data.length - 1]) pm10.value = pm10.data[pm10.data.length - 1][1];
     addNullAtNextMidnightHighcharts(pm10.data, date);
     
     if (pm10.value > 50) {
@@ -198,7 +210,8 @@ app.get('/', (req, res, next) => {
         co2,
         messages,
         nextDate,
-        prevDate
+        prevDate,
+        dates
     })
 })
 
