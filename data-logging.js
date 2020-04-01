@@ -80,7 +80,7 @@ async function LogReadingDaily(name, timestamp, value) {
         name,
         timestamp.getUTCFullYear().toString(),
         zeroPad((timestamp.getUTCMonth() + 1), 2),
-        timestamp.getUTCDate().toString()
+        zeroPad((timestamp.getUTCDate()), 2)
     );
     await CreateDirectoryAsync(readingDirectory);
     const filename = 'raw.csv';
@@ -123,4 +123,21 @@ async function CreateDirectoryAsync(directory) {
             return resolve();
         })
     })
+}
+
+async function CreateAverages() {
+    const signalFolders = await GetFolders('./data');
+    // load averages files
+    // look for missing values
+    // try to load files with missing values
+    // calculate missing values
+    // save averages files
+}
+
+async function GetFolders(directory) {
+    return new Promise((resolve, reject) => {
+        fs.readdir(directory, { withFileTypes: true }, (err, files) => {
+            resolve(files.filter(dirent => dirent.isDirectory()).map(dirent => dirent.name));
+        })
+    }) 
 }

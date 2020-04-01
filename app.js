@@ -64,8 +64,8 @@ app.get('/', (req, res, next) => {
     const humidity = {};
     const humidityCsv = loadCsvDate('humidity', date);
     humidity.data = csvToHighchartPoints(humidityCsv);
-    humidity.value = '';
-    if (humidity.data[humidity.data.length - 1]) humidity.value = humidity.data[humidity.data.length - 1][1];
+    humidity.value = Number.NaN;
+    if (humidity.data[humidity.data.length - 1] != null) humidity.value = humidity.data[humidity.data.length - 1][1];
     addNullAtNextMidnightHighcharts(humidity.data, date);
     
     if (humidity.value < 30) {
@@ -90,8 +90,8 @@ app.get('/', (req, res, next) => {
     const pm2p5 = {};
     const pm2p5Csv = loadCsvDate('pm2.5', date);
     pm2p5.data = csvToHighchartPoints(pm2p5Csv);
-    pm2p5.value = '';
-    if (pm2p5.data[pm2p5.data.length - 1]) pm2p5.value = pm2p5.data[pm2p5.data.length - 1][1];
+    pm2p5.value = Number.NaN;
+    if (pm2p5.data[pm2p5.data.length - 1] != null) pm2p5.value = pm2p5.data[pm2p5.data.length - 1][1];
     addNullAtNextMidnightHighcharts(pm2p5.data, date);
     
     // based on WHO guidelines
@@ -129,8 +129,8 @@ app.get('/', (req, res, next) => {
     const pm10 = {};
     const pm10Csv = loadCsvDate('pm10', date);
     pm10.data = csvToHighchartPoints(pm10Csv);
-    pm10.value = '';
-    if (pm10.data[pm10.data.length - 1]) pm10.value = pm10.data[pm10.data.length - 1][1];
+    pm10.value = Number.NaN;
+    if (pm10.data[pm10.data.length - 1] != null) pm10.value = pm10.data[pm10.data.length - 1][1];
     addNullAtNextMidnightHighcharts(pm10.data, date);
     
     if (pm10.value > 50) {
@@ -169,8 +169,8 @@ app.get('/', (req, res, next) => {
     const co2 = {};
     const co2Csv = loadCsvDate('CO2', date);
     co2.data = csvToHighchartPoints(co2Csv);
-    co2.value = '';
-    if (co2.data[co2.data.length - 1]) {
+    co2.value = Number.NaN;
+    if (co2.data[co2.data.length - 1] != null) {
         co2.value = co2.data[co2.data.length - 1][1];
     }
     addNullAtNextMidnightHighcharts(co2.data, date);
