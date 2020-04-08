@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 const util = require('./util');
 
 require('./data-logging');
+require('./notifications');
 
 app.set('view engine', 'ejs'); 
 app.use(bodyParser.urlencoded({ extended: true }));
