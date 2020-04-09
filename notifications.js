@@ -5,18 +5,15 @@ const mhz19bSensor = require('./sensors/MHZ19B');
 mhz19bSensor.on('data', mhz19bMeasureEvent);
 
 var co2 = 0;
-var lastCo2Alert = new Date(new Date().valueOf() - (1000*60*60*24)); // 24 hours ago
+var limit = 800;
 
 function mhz19bMeasureEvent(data) {
     let newCo2 = data['co2'];
-    if (newCo2 >= 800 && co2 < 800) {
-        const now = new Date();
-        const msSinceLastAlert = (now.valueOf() - lastCo2Alert.valueOf());
-        if (msSinceLastAlert > 1000 * 60 * 15) {
-            // at least 15 mins
-            lastCo2Alert = now;
-            sendPhoneNotification('CO2', newCo2);
-        }
+    if (newCo2 >= limit && co2 < limit) {
+      sendPhoneNotification('CO2', newCo2);
+    }
+    if (newCo2 < limit && co2 >= limit) {
+      sendPhoneNotification('CO2', newCo2);
     }
     co2 = newCo2;
 }
