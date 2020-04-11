@@ -66,7 +66,7 @@ async function mhz19bMeasureEvent(data) {
         latestReadings.co2 = co2;
 
         await LogReadingDaily('CO2', timestamp, co2);
-        await LogReadingDaily('CO2', timestamp, co2);
+        await LogReadingMonthly('CO2', timestamp, co2);
     } catch (error) {
         console.log('Error taking MH-Z19B reading', error);
     }
