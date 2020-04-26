@@ -8,14 +8,18 @@ var co2 = 0;
 var limit = 700;
 
 function mhz19bMeasureEvent(data) {
+  try {
     let newCo2 = data['co2'];
     if (newCo2 >= limit && co2 < limit) {
-      sendPhoneNotification(`CO2 High: ${value} ppm`);
+      sendPhoneNotification(`CO2 High: ${newCo2} ppm`);
     }
     if (newCo2 < limit && co2 >= limit) {
-      sendPhoneNotification(`CO2 OK: ${value} ppm`);
+      sendPhoneNotification(`CO2 OK: ${newCo2} ppm`);
     }
     co2 = newCo2;
+  } catch (error) {
+    console.log('Error with notification MH-Z19b measure event', error);
+  }
 }
 
 function sendPhoneNotification(message) {
