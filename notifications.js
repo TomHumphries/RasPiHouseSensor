@@ -5,20 +5,20 @@ const mhz19bSensor = require('./sensors/MHZ19B');
 mhz19bSensor.on('data', mhz19bMeasureEvent);
 
 var co2 = 0;
-var limit = 800;
+var limit = 700;
 
 function mhz19bMeasureEvent(data) {
     let newCo2 = data['co2'];
     if (newCo2 >= limit && co2 < limit) {
-      sendPhoneNotification('CO2', newCo2);
+      sendPhoneNotification(`CO2 High: ${value} ppm`);
     }
     if (newCo2 < limit && co2 >= limit) {
-      sendPhoneNotification('CO2', newCo2);
+      sendPhoneNotification(`CO2 OK: ${value} ppm`);
     }
     co2 = newCo2;
 }
 
-function sendPhoneNotification(type, value) {
+function sendPhoneNotification(message) {
     const options = {
         hostname: 'maker.ifttt.com',
         port: 443,
@@ -41,10 +41,8 @@ function sendPhoneNotification(type, value) {
         console.log('sendPhoneNotification error', error);
       })
 
-      // Example notification: "The CO2 reading is 801 ppm"
       const data = JSON.stringify({
-        value1: type, // CO2
-        value2: `${value} ppm` // 801 ppm
+        value1: message
       })
 
       req.write(data);

@@ -183,7 +183,7 @@ app.get('/', (req, res, next) => {
         co2.text = "High",
         co2.class = "text-danger"
         messages.push(`The CO2 concentration is high. `);
-    } else if (co2.value >= 800) {
+    } else if (co2.value >= 700) {
         co2.text = "Moderate",
         co2.class = "text-warning"
         messages.push(`The CO2 concentration is moderate. `);
